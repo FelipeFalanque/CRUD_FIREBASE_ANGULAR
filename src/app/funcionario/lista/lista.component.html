@@ -1,0 +1,81 @@
+<div class="row justify-content-center">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Departamento</th>
+                <th scope="col">Cadastro</th>
+                <th scope="col">Atualizacao</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let funcionario of funcionarios | async; index as i">
+                <th scope="row">{{i + 1}}</th>
+                <td>{{funcionario.nome}}</td>
+                <td>{{funcionario.departamento}}</td>
+                <td>{{funcionario.dhCadastro.dataFormatada}}</td>
+                <td>{{funcionario.dhAtualizacao ? funcionario.dhAtualizacao.dataFormatada : ''}}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-warning btn-sm mr-2"
+                        (click)="edit(funcionario, funcionario.key)"><i class="fa fa-pencil-square-o"
+                            aria-hidden="true"></i> edit</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="delete(funcionario.key)"><i
+                            class="fa fa-trash" aria-hidden="true"></i> remove</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row justify-content-center mt-3">
+
+    <div class="card text-white bg-primary m-3 text-center" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Funcionarios</h5>
+            <div *ngIf="(funcionarios| async)?.length > 0; then thenBlock; else elseBlock"></div>
+
+            <ng-template #thenBlock>
+                <div>
+                    <h1 class="display-3 font-weight-bold"><i class="fa fa-users" aria-hidden="true"></i>  {{(funcionarios| async)?.length}}</h1>
+                </div>
+            </ng-template>
+
+            <ng-template #elseBlock>
+
+                <div class="spinner-grow text-danger mr-2" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <div class="spinner-grow text-danger mr-2" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <div class="spinner-grow text-danger mr-2" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+            </ng-template>
+
+        </div>
+    </div>
+
+    <div class="card text-white bg-success m-3 text-center" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Pacotes Em Transporte</h5>
+            <div>
+                <h1 class="display-3 font-weight-bold"><i class="fa fa-truck" aria-hidden="true"></i>  {{36}}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="card text-white bg-warning m-3 text-center" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Pacotes Aguardando Tranporte</h5>
+            <div>
+                <h1 class="display-3 font-weight-bold"><i class="fa fa-cubes" aria-hidden="true"></i>  {{117}}</h1>
+            </div>
+        </div>
+    </div>
+</div>

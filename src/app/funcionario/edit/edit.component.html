@@ -1,0 +1,50 @@
+<div *ngIf="formVisible">
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" class="form-control" [(ngModel)]="funcionario.nome" name="nome" />
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-group">
+          <label>Departamento</label>
+          <input type="text" class="form-control" [(ngModel)]="funcionario.departamento" name="departamento" />
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label>Data Cadastro</label>
+          <input type="text" class="form-control"
+            value="{{ funcionario.dhCadastro? funcionario.dhCadastro.dataFormatada : '' }}" disabled />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label>Data Atualizacao</label>
+          <input type="text" class="form-control"
+            value="{{ funcionario.dhAtualizacao ? funcionario.dhAtualizacao.dataFormatada : '' }}" disabled />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="submit" class="btn btn-primary btn-sm mb-3 mr-3"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+          salvar</button>
+        <a href="javascript:void(0)" (click)="cancelar()"
+          class="btn btn-danger btn-sm mb-3 mr-3"><i class="fa fa-times" aria-hidden="true"></i> cancelar</a>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="!formVisible" class="row">
+  <a href="javascript:void(0)" (click)="habilitarForm()"
+    class="btn btn-success btn-sm mb-3 mr-3"><i class="fa fa-plus-square" aria-hidden="true"></i> novo</a>
+</div>
