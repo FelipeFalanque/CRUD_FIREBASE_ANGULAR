@@ -10,7 +10,8 @@ export class FuncionarioService {
 
   constructor(private _angularFireDatabase: AngularFireDatabase) { }
 
-  private nomeNo : string = "funcionarios";
+  private nomeNo: string = "funcionarios";
+  private recordsPerPage: number = 5;
 
   insert(funcionario: Funcionario) {
     this._angularFireDatabase
@@ -34,11 +35,35 @@ export class FuncionarioService {
 
   getAll() {
     return this._angularFireDatabase
-    .list(this.nomeNo)
+    .list(this.nomeNo, ref => ref.orderByKey().limitToFirst(this.recordsPerPage))
     .snapshotChanges()
     .pipe(
       map(changes => {
         return changes.map(c => ({ key: c.payload.key, ...<any>c.payload.val() }));
+      })
+    );
+  }
+
+  getRange(startkey: string) {
+
+    return this._angularFireDatabase
+    .list(this.nomeNo, ref => ref.orderByKey().startAt(startkey).limitToFirst(this.recordsPerPage))
+    .snapshotChanges()
+    .pipe(
+      map(changes => {
+        return changes.map(c => ({ key: c.payload.key, ...<any>c.payload.val() }));
+      })
+    );
+
+  }
+
+  count() {
+    return this._angularFireDatabase
+    .list(this.nomeNo)
+    .snapshotChanges()
+    .pipe(
+      map(changes => {
+        return changes.length;
       })
     );
   }
