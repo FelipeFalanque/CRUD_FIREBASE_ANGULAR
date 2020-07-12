@@ -15,57 +15,68 @@ export class FuncionarioService {
 
   insert(funcionario: Funcionario) {
     this._angularFireDatabase
-    .list(this.nomeNo)
-    .push(funcionario)
-    .then((result: any) => {
-      //console.log(result)
-      //console.log(result.key)
-    });
+      .list(this.nomeNo)
+      .push(funcionario)
+      .then((result: any) => {
+        //console.log(result)
+        //console.log(result.key)
+      });
   }
 
   update(funcionario: Funcionario, key: string) {
     this._angularFireDatabase
-    .list(this.nomeNo)
-    .update(key, funcionario)
-    .then((result: any) => {
-      //console.log(result)
-      //console.log(result.key)
-    });
+      .list(this.nomeNo)
+      .update(key, funcionario)
+      .then((result: any) => {
+        //console.log(result)
+        //console.log(result.key)
+      });
   }
 
   getAll() {
     return this._angularFireDatabase
-    .list(this.nomeNo, ref => ref.orderByKey().limitToFirst(this.recordsPerPage))
-    .snapshotChanges()
-    .pipe(
-      map(changes => {
-        return changes.map(c => ({ key: c.payload.key, ...<any>c.payload.val() }));
-      })
-    );
+      .list(this.nomeNo)
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(c => ({ key: c.payload.key, ...<any>c.payload.val() }));
+        })
+      );
   }
 
-  getRange(startkey: string) {
+  getRange(startkey?: string) {
 
-    return this._angularFireDatabase
-    .list(this.nomeNo, ref => ref.orderByKey().startAt(startkey).limitToFirst(this.recordsPerPage))
-    .snapshotChanges()
-    .pipe(
-      map(changes => {
-        return changes.map(c => ({ key: c.payload.key, ...<any>c.payload.val() }));
-      })
-    );
-
+    if (startkey) {
+      return this._angularFireDatabase
+        .list(this.nomeNo, ref => ref.orderByKey().startAt(startkey).limitToFirst(this.recordsPerPage))
+        .snapshotChanges()
+        .pipe(
+          map(changes => {
+            return changes.map(c => ({ key: c.payload.key, ...<any>c.payload.val() }));
+          })
+        );
+    }
+    else {
+      return this._angularFireDatabase
+      .list(this.nomeNo, ref => ref.orderByKey().limitToFirst(this.recordsPerPage))
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(c => ({ key: c.payload.key, ...<any>c.payload.val() }));
+        })
+      );
+    }
   }
 
   count() {
     return this._angularFireDatabase
-    .list(this.nomeNo)
-    .snapshotChanges()
-    .pipe(
-      map(changes => {
-        return changes.length;
-      })
-    );
+      .list(this.nomeNo)
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.length;
+        })
+      );
   }
 
   delete(key: string) {

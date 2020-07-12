@@ -30,7 +30,7 @@ export class ListaComponent implements OnInit {
     private _modalService: BsModalService) { }
 
   ngOnInit(): void {
-    this.funcionarios = this._funcionarioService.getAll();
+    this.funcionarios = this._funcionarioService.getRange();
     this.funcionarios.subscribe(array => {
       this.hash.set(this.page, { firstkey: array[0].key, lastkey: array[array.length - 1].key });
       console.log(this.hash);
@@ -44,7 +44,6 @@ export class ListaComponent implements OnInit {
   nextPage() {
     if (this.page < this.numberOfPages) {
       this.page++;
-      console.log(this.page);
       this.funcionarios = this._funcionarioService.getRange(this.hash.get(this.page - 1).lastkey);
       this.funcionarios.subscribe(array => {
         this.hash.set(this.page, { firstkey: array[0].key, lastkey: array[array.length - 1].key });
@@ -56,8 +55,7 @@ export class ListaComponent implements OnInit {
   lastPage() {
     if (this.page > 1) {
       this.page--;
-      console.log(this.page);
-      this.funcionarios = this._funcionarioService.getRange(this.hash.get(this.page).firstkey);
+      this.funcionarios = this._funcionarioService.getRange(this.page == 1 ? null : this.hash.get(this.page).firstkey);
       this.funcionarios.subscribe(array => {
         this.hash.set(this.page, { firstkey: array[0].key, lastkey: array[array.length - 1].key });
         console.log(this.hash);
